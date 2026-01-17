@@ -1,5 +1,4 @@
-﻿using FCG.Notification.Application.UseCases.Feature.Email.Command.SendEmail;
-using FCG.Notification.Application.UseCases.Feature.Email.Command.SendEmailSaudacao;
+﻿using FCG.Notification.Application.UseCases.Feature.Email.Command.SendEmailPayment;
 using FCG.Notification.Application.UseCases.Services;
 using MassTransit;
 using MediatR;
@@ -12,12 +11,9 @@ namespace FCG.Notification.Application.UseCases.Feature.Payment.Consumers
     public class PaymentProcessConsumer : IConsumer<FCG.Shared.Contracts.PaymentProcessedEvent>
     {
         private readonly IMediator _mediator;
-        private readonly GameApiService _gameApiService;
-        private readonly UserApiService _userApiService;
-        public PaymentProcessConsumer(IMediator mediator, GameApiService gameApiService, UserApiService userApiService)
+
+        public PaymentProcessConsumer(IMediator mediator)
         {
-            _gameApiService = gameApiService;
-            _userApiService = userApiService;
             _mediator = mediator;
         }
         public Task Consume(ConsumeContext<FCG.Shared.Contracts.PaymentProcessedEvent> context)
@@ -26,7 +22,11 @@ namespace FCG.Notification.Application.UseCases.Feature.Payment.Consumers
                  new SendEmailPaymentCommand
                  {
                      UserId = context.Message.UserId,
-                     GameId = context.Message.GameId
+                     GameId = context.Message.GameId,
+                     Email = context.Message.Email,
+                     Name = context.Message.Name,
+                     Game = context.Message.Game,
+                     Price = context.Message.Price
                  }
             );
         }

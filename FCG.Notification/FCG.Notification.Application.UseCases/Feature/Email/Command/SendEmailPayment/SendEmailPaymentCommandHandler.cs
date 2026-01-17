@@ -1,31 +1,23 @@
 ﻿using FCG.Notification.Application.Interface.Service;
-using FCG.Notification.Application.UseCases.Feature.Email.Command.SendEmail;
 using FCG.Notification.Application.UseCases.Services;
 using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace FCG.Notification.Application.UseCases.Feature.Email.Command.SendEmailSaudacao
+namespace FCG.Notification.Application.UseCases.Feature.Email.Command.SendEmailPayment
 {
     public class SendEmailPaymentCommandHandler : IRequestHandler<SendEmailPaymentCommand, bool>
     {
         private readonly IEmailService _emailService;
-        private readonly GameApiService _gameApiService;
-        private readonly UserApiService _userApiService;
 
-        public SendEmailPaymentCommandHandler(IEmailService emailService, GameApiService gameApiService, UserApiService userApiService)
+        public SendEmailPaymentCommandHandler(IEmailService emailService)
         {
             _emailService = emailService;
-            _gameApiService = gameApiService;
-            _userApiService = userApiService;
         }
 
         public async Task<bool> Handle(SendEmailPaymentCommand request, CancellationToken cancellationToken)
         {
-            var game = await _gameApiService.GetGameAsync(request.GameId);
-            var user = await _userApiService.GetUserAsync(request.UserId);
-
             try
             {
                 var subject = "FCG - Bem-vindo(a)!";
@@ -69,9 +61,9 @@ namespace FCG.Notification.Application.UseCases.Feature.Email.Command.SendEmailS
                                     </div>
                                     <div class=""content"">
                                         <div class=""status-box"">
-                                            PAGAMENTO APROVADO (STATUS: APPROVED)
+                                            PAGAMENTO APROVADO
                                         </div>
-                                        <h2>Olá, {user.Name}!</h2>
+                                        <h2>Olá, {request.Name}!</h2>
                                         <p>Boas notícias, O sistema confirmou o seu pagamento e sua compra na <strong>FCG GAMES</strong> está garantida.</p>
                                         <p>Confira abaixo os detalhes da sua aquisição:</p>
                                         <table class=""order-summary"">
@@ -83,8 +75,8 @@ namespace FCG.Notification.Application.UseCases.Feature.Email.Command.SendEmailS
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td>{game.Title}</td>
-                                                    <td align=""right"">R$ {game.PriceDiscount}</td>
+                                                    <td>{request.Game}</td>
+                                                    <td align=""right"">R$ {request.Price.Value.ToString("N2")}</td>
                                                 </tr>
                                                 <tr>
                                                     <td>Frete / Envio Digital</td>
@@ -95,7 +87,7 @@ namespace FCG.Notification.Application.UseCases.Feature.Email.Command.SendEmailS
                                     </div>
                                     <div class=""footer"">
                                         <p>Este é um e-mail automático enviado por FCG GAMES.<br>
-                                        Não responda a este e-mail. Para suporte, use: <a href=""mailto:contato@fcggames.com"" style=""color: #f39c12;"">contato@fcggames.com</a></p>
+                                        Não responda a este e-mail. Para suporte, use: <a href=""fiapclound@gmail.com"" style=""color: #f39c12;"">contato@fcggames.com</a></p>
                                         <p>&copy; 2026 FCG GAMES - Level Up Your Life.</p>
                                     </div>
                                 </div>
@@ -104,7 +96,7 @@ namespace FCG.Notification.Application.UseCases.Feature.Email.Command.SendEmailS
                             ";
 
                 await _emailService.SendAsync(
-                    user.Email,
+                    request.Email,
                     subject,
                     body
                 );
