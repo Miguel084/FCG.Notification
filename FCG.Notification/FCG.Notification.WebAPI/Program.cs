@@ -78,7 +78,7 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("ADMINISTRADOR", policy => policy.RequireRole("ADMINISTRADOR"));
 });
 
-var app = builder.Build();
+var app = builder.Build(); 
 
 app.Lifetime.ApplicationStarted.Register(() =>
 {
