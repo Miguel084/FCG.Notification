@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/document/" />
+  <Folder Name="/src/" />
+  <Folder Name="/src/Application/">
+    <Project Path="FCG.Notification.Application.Dto/FCG.Notification.Application.Dto.csproj" Id="74f9cd39-2cdf-462f-89cd-e16d24b25431" />
+    <Project Path="FCG.Notification.Application.Interface/FCG.Notification.Application.Interface.csproj" Id="e765b337-6600-4972-88bd-f5c7ae0ea6c0" />
+    <Project Path="FCG.Notification.Application.UseCases/FCG.Notification.Application.UseCases.csproj" Id="1d50d4cc-b2d6-40bc-a3e9-a1e1dca1ac72" />
+  </Folder>
+  <Folder Name="/src/Services/">
+    <Project Path="FCG.Notification.WebAPI/FCG.Notification.WebAPI.csproj" Id="ab66e987-715f-4941-9695-68bd5951a15d" />
+  </Folder>
+  <Folder Name="/test/" />
+</Solution>
