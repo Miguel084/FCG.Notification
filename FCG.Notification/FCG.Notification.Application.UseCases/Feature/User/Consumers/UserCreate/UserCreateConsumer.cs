@@ -1,7 +1,7 @@
 ﻿using MassTransit;
 using FCG.Shared.Contracts;
 using MediatR;
-using FCG.Notification.Application.UseCases.Feature.Email.Command.SendEmail;
+using FCG.Notification.Application.UseCases.Feature.Email.Command.SendEmailGreeting;
 
 namespace FCG.Notification.Application.UseCases.Feature.User.Consumers.UserCreate
 {

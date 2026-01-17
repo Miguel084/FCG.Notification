@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace FCG.Notification.Application.UseCases.Feature.Email.Command.SendEmail
+namespace FCG.Notification.Application.UseCases.Feature.Email.Command.SendEmailGreeting
 {
     public class SendEmailGreetingCommand  : IRequest<bool>
     {

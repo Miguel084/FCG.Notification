@@ -1,6 +1,5 @@
 ﻿using FCG.Notification.Application.UseCases.Feature.Payment.Consumers;
 using FCG.Notification.Application.UseCases.Feature.User.Consumers.UserCreate;
-using FCG.Notification.Application.UseCases.Handler;
 using FCG.Notification.Application.UseCases.Services;
 using FCG.Shared.Contracts;
 using MassTransit;
@@ -24,28 +23,6 @@ namespace FCG.Notification.Application.UseCases.Registration
         {
             services.AddMediatR(Assembly.GetExecutingAssembly());
 
-            services.AddHttpContextAccessor();
-            services.AddTransient<AuthenticationHandler>();
-
-            // HttpClient configurado
-            services.AddHttpClient<UserApiService>(client =>
-            {
-                client.BaseAddress = new Uri("https://localhost:7116/");
-                client.Timeout = TimeSpan.FromSeconds(30);
-                client.DefaultRequestHeaders.Accept.Add(
-                    new MediaTypeWithQualityHeaderValue("application/json"));
-            })
-            .AddHttpMessageHandler<AuthenticationHandler>();
-
-            services.AddHttpClient<GameApiService>(client => 
-            {
-                client.BaseAddress = new Uri("https://localhost:7030/");
-                client.Timeout = TimeSpan.FromSeconds(30);
-                client.DefaultRequestHeaders.Accept.Add(
-                    new MediaTypeWithQualityHeaderValue("application/json"));
-            })
-            .AddHttpMessageHandler<AuthenticationHandler>();
-
             services.AddMassTransit(x =>
             {
                 x.AddConsumer<UserCreateConsumer>();
@@ -53,10 +30,10 @@ namespace FCG.Notification.Application.UseCases.Registration
 
                 x.UsingRabbitMq((context, cfg) =>
                 {
-                    cfg.Host("localhost", "/", h =>
+                    cfg.Host(configuration["Rabbitmq:Url"], "/", h =>
                     {
-                        h.Username("admin");
-                        h.Password("admin123");
+                        h.Username(configuration["Rabbitmq:Username"]);
+                        h.Password(configuration["Rabbitmq:Password"]);
                     });
 
                     cfg.ReceiveEndpoint("user-create-queue", e =>
